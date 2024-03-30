@@ -12,6 +12,7 @@ data = pd.read_csv("Data/JoshWristMotion.csv")
 # Separate features and target variable
 X = data[['rotationRateX', 'rotationRateY', 'rotationRateZ', 'gravityX', 'gravityY', 'gravityZ', 'accelerationX', 'accelerationY', 'accelerationZ', 'quaternionW', 'quaternionX', 'quaternionY', 'quaternionZ']]
 y = data['shot']
+
 #Try to split shots up in separate bins
 # Train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)

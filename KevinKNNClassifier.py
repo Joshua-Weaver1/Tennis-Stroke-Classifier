@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, classification_report
 
 # Read the CSV file
 try:
-    data = pd.read_csv("Data/AlexWristMotion.csv")
+    data = pd.read_csv("Data/KevinWristMotion.csv")
 except FileNotFoundError:
     print("File not found. Please check the file path.")
     exit()

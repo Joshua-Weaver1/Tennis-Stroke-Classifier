@@ -1,9 +1,7 @@
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
-from imblearn.over_sampling import SMOTE
 from sklearn.metrics import accuracy_score, classification_report
 
 # Read the CSV file
@@ -27,23 +25,17 @@ y = data['shot']
 # Split data into train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Scale features
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
-
-# Handle class imbalance using SMOTE (Synthetic Minority Over-sampling Technique)
-smote = SMOTE(sampling_strategy='auto', random_state=42)
-X_train_resampled, y_train_resampled = smote.fit_resample(X_train_scaled, y_train)
-
 # Initialize KNN classifier
 knn_classifier = KNeighborsClassifier(n_neighbors=5)
 
+# Perform cross-validation
+cv_scores = cross_val_score(knn_classifier, X_train, y_train, cv=5)
+
 # Train the classifier
-knn_classifier.fit(X_train_resampled, y_train_resampled)
+knn_classifier.fit(X_train, y_train)
 
 # Predictions
-y_pred = knn_classifier.predict(X_test_scaled)
+y_pred = knn_classifier.predict(X_test)
 
 # Calculate accuracy
 accuracy = accuracy_score(y_test, y_pred)
@@ -52,3 +44,7 @@ print("Accuracy:", accuracy)
 # Print Classification Report
 print("Classification Report:")
 print(classification_report(y_test, y_pred))
+
+# Print Cross Validation Scores
+print("Cross Validation Scores:", cv_scores)
+print("Mean CV Score:", np.mean(cv_scores))
