@@ -7,7 +7,7 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import cross_val_score
 
 # Read the CSV file
-data = pd.read_csv("Data/AlexWristMotion.csv")
+data = pd.read_csv("data/AllWristMotion.csv")
 
 # Separate features and target variable
 X = data[['rotationRateX', 'rotationRateY', 'rotationRateZ', 'gravityX', 'gravityY', 'gravityZ', 'accelerationX', 'accelerationY', 'accelerationZ', 'quaternionW', 'quaternionX', 'quaternionY', 'quaternionZ']]

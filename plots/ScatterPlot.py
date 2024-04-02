@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d import Axes3D
 data_file = input("Enter the data file: ").lower()
 
 # Read the CSV file into a DataFrame
-df = pd.read_csv("Data/" + data_file + "WristMotion.csv")
+df = pd.read_csv("data/" + data_file + "WristMotion.csv")
 
 # Function to plot data based on user input
 def plot_data(data_type):

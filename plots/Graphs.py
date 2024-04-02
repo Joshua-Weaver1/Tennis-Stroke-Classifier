@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load the CSV data
-data = pd.read_csv('Data/AllWristMotion.csv')
+data = pd.read_csv('data/AllWristMotion.csv')
 
 # Separate data by shot type
 shot_types = {0: 'No Shot', 1: 'Forehand', 2: 'Backhand', 3: 'Overhead'}

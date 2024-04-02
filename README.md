@@ -6,6 +6,10 @@ This repository contains the code and documentation for my ECM3401 Individual Pr
 ## Project Structure
 - **data/**: Contains the CSV files containing inertial sensor data for different tennis shots.
 - **models/**: Includes trained machine learning models and scripts for model evaluation.
+- **plots/**: Includes scatter models and plot for data visualisation.
+- **alex/**: Contains the trained machine learning models and scripts for just Alex.
+- **kevin/**: Contains the trained machine learning models and scripts for just Kevin.
+- **joshua/**: Contains the trained machine learning models and scripts for just Joshua.
 - **README.md**: You are here! The main documentation for the project.
 
 ## License
