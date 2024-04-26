@@ -141,7 +141,7 @@ class TennisClassifierGUI:
 
     def create_optional_params_widgets(self, parent_title_frame, parent_content_frame):
         """
-        Creates widgets for optional parameters (K value, Window Size).
+        Creates widgets for optional parameters (K value, Window Size, Sampling Rate).
 
         Parameters:
         - parent_title_frame: Parent frame for the title bar.
@@ -158,6 +158,15 @@ class TennisClassifierGUI:
         window_size_label.grid(row=1, column=0, padx=(0, 10), pady=5, sticky="e")
         self.window_size_entry = tk.Entry(parent_content_frame)
         self.window_size_entry.grid(row=1, column=1, padx=(0, 10), pady=5, sticky="ew")
+
+        # Dropdown menu for selecting sampling rate
+        sampling_rate_label = tk.Label(parent_content_frame, text="Select Sampling Rate:", bg="white", font=("Arial", 12))
+        sampling_rate_label.grid(row=2, column=0, padx=(0, 10), pady=5, sticky="e")
+        self.selected_sampling_rate = tk.StringVar()
+        self.selected_sampling_rate.set("100Hz")  # Set the default value
+        sampling_rate_menu = tk.OptionMenu(parent_content_frame, self.selected_sampling_rate, "100Hz", "50Hz", "20Hz")
+        sampling_rate_menu.grid(row=2, column=1, padx=(0, 10), pady=5, sticky="ew")
+
 
     def create_metrics_widgets(self, parent_content_frame):
         """
@@ -176,32 +185,34 @@ class TennisClassifierGUI:
         file_name = self.selected_file.get()
         model_name = self.selected_model.get()
         k_value = self.k_entry.get()
+        print("Value of k retrieved from GUI:", k_value)  # Debug print statement
         window_size = self.window_size_entry.get()
+        sampling_rate = self.selected_sampling_rate.get()  # Get selected sampling rate
 
         # Import the selected model dynamically
         model_module = importlib.import_module(f"models.{model_name}")
 
         # Call the calculate_metrics function from the selected model
         try:
-            if model_name == "knn":
+            if model_name == "knn_model":
                 if k_value and window_size:
                     k_value = int(k_value)
                     window_size = int(window_size)
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", k=k_value, window_size=window_size)
+                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", k=k_value, window_size=window_size, sampling_rate=sampling_rate)
                 elif k_value:
                     k_value = int(k_value)
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", k=k_value)
+                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", k=k_value, sampling_rate=sampling_rate)
                 elif window_size:
                     window_size = int(window_size)
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", k=5, window_size=window_size)
+                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", k=5, window_size=window_size, sampling_rate=sampling_rate)
                 else:
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}")
+                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", sampling_rate=sampling_rate)
             else:
                 if window_size:
                     window_size = int(window_size)
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", window_size=window_size)
+                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", window_size=window_size, sampling_rate=sampling_rate)
                 else:
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}")
+                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", sampling_rate=sampling_rate)
 
             # Update the metric labels
             self.accuracy_label.config(text=f"Accuracy: {accuracy}")

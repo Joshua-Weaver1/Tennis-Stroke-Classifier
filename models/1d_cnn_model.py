@@ -5,6 +5,10 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
 from keras.models import Sequential
 from keras.layers import Conv1D, MaxPooling1D, Flatten, Dense
+import joblib
+
+# Dictionary to store trained models
+trained_models = {}
 
 def preprocess_data(csv_file_path, window_size=200):
     """
@@ -54,13 +58,14 @@ def create_cnn_model(input_shape, num_classes):
     model.add(Dense(num_classes, activation='softmax'))
     return model
 
-def calculate_metrics(csv_file_path, window_size=200):
+def calculate_metrics(csv_file_path, window_size=200, sampling_rate="100Hz"):
     """
     Calculates classification metrics for a CNN model using preprocessed data.
 
     Parameters:
     - csv_file_path (str): Path to the CSV file containing the dataset.
     - window_size (int): Size of the window for creating data segments.
+    - sampling_rate (str): Sampling rate for selecting training data.
 
     Returns:
     - accuracy (float): Accuracy of the model.
@@ -68,7 +73,12 @@ def calculate_metrics(csv_file_path, window_size=200):
     - recall (float): Weighted average recall.
     - f1_score (float): Weighted average F1-score.
     """
-    # Preprocess the data with the given window size
+    # Check if model with the same parameters is already trained
+    model_key = f"window={window_size}_sampling_rate={sampling_rate}"
+    if model_key in trained_models:
+        return trained_models[model_key]
+
+    # Preprocess the data with the given window size and sampling rate
     X, y = preprocess_data(csv_file_path, window_size)
     
     # Encode labels
@@ -103,11 +113,7 @@ def calculate_metrics(csv_file_path, window_size=200):
     recall = report['weighted avg']['recall']
     f1_score = report['weighted avg']['f1-score']
     
-    return accuracy, precision, recall, f1_score
+    # Store the trained model in the dictionary
+    trained_models[model_key] = (accuracy, precision, recall, f1_score)
 
-# Example usage:
-accuracy, precision, recall, f1_score = calculate_metrics("data/all_shot_data.csv", window_size=200)
-print("Accuracy:", accuracy)
-print("Precision:", precision)
-print("Recall:", recall)
-print("F1-score:", f1_score)
+    return accuracy, precision, recall, f1_score
