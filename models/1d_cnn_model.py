@@ -72,6 +72,8 @@ def calculate_metrics(csv_file_path, window_size=200, sampling_rate="100Hz"):
     - precision (float): Weighted average precision.
     - recall (float): Weighted average recall.
     - f1_score (float): Weighted average F1-score.
+    - correct_guesses (dict): Dictionary containing the number of correct guesses for each class.
+    - total_guesses (dict): Dictionary containing the total number of guesses for each class.
     """
     # Check if model with the same parameters is already trained
     model_key = f"window={window_size}_sampling_rate={sampling_rate}"
@@ -106,6 +108,15 @@ def calculate_metrics(csv_file_path, window_size=200, sampling_rate="100Hz"):
     y_pred = model.predict(X_test)
     y_pred_classes = np.argmax(y_pred, axis=1)
     
+    # Calculate correct and total guesses for each class
+    unique_classes = np.unique(y_test)
+    correct_guesses = {label: 0 for label in unique_classes}
+    total_guesses = {label: 0 for label in unique_classes}
+    for true_label, pred_label in zip(y_test, y_pred_classes):
+        total_guesses[true_label] += 1
+        if true_label == pred_label:
+            correct_guesses[true_label] += 1
+    
     # Calculate precision, recall, and F1-score
     report = classification_report(y_test, y_pred_classes, output_dict=True)
     
@@ -114,6 +125,6 @@ def calculate_metrics(csv_file_path, window_size=200, sampling_rate="100Hz"):
     f1_score = report['weighted avg']['f1-score']
     
     # Store the trained model in the dictionary
-    trained_models[model_key] = (accuracy, precision, recall, f1_score)
+    trained_models[model_key] = (accuracy, precision, recall, f1_score, correct_guesses, total_guesses)
 
-    return accuracy, precision, recall, f1_score
+    return accuracy, precision, recall, f1_score, correct_guesses, total_guesses

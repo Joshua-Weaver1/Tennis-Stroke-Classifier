@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import os
 import importlib
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class TennisClassifierGUI:
     """
@@ -43,10 +45,9 @@ class TennisClassifierGUI:
         self.create_metrics_widgets(metrics_content_frame)
 
         # Plot Box (Top Right)
-        plot_frame = tk.Frame(self.frame, bg="white", padx=10, pady=10, relief=tk.RAISED, borderwidth=1)
-        plot_frame.grid(row=0, column=1, padx=10, pady=10, sticky=tk.NSEW)
-        plot_title_frame, plot_content_frame = self.create_half_split_frames(plot_frame)
-        # You can add plot visualization here
+        self.plot_frame = tk.Frame(self.frame, bg="white", padx=10, pady=10, relief=tk.RAISED, borderwidth=1)
+        self.plot_frame.grid(row=0, column=1, padx=10, pady=10, sticky=tk.NSEW)
+        plot_title_frame, plot_content_frame = self.create_half_split_frames(self.plot_frame)
 
         # Configure grid weights to make frames expand equally
         self.frame.grid_rowconfigure(0, weight=1)
@@ -78,6 +79,7 @@ class TennisClassifierGUI:
         """
         Exits the application.
         """
+        plt.close('all')  # Close all matplotlib figures
         self.master.destroy()
 
     def add_title_bar(self, parent_frame, title, color):
@@ -167,7 +169,6 @@ class TennisClassifierGUI:
         sampling_rate_menu = tk.OptionMenu(parent_content_frame, self.selected_sampling_rate, "100Hz", "50Hz", "20Hz")
         sampling_rate_menu.grid(row=2, column=1, padx=(0, 10), pady=5, sticky="ew")
 
-
     def create_metrics_widgets(self, parent_content_frame):
         """
         Creates widgets for displaying classification metrics.
@@ -198,29 +199,64 @@ class TennisClassifierGUI:
                 if k_value and window_size:
                     k_value = int(k_value)
                     window_size = int(window_size)
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", k=k_value, window_size=window_size, sampling_rate=sampling_rate)
+                    accuracy, recall, precision, f1_score, correct_guesses, total_guesses = model_module.calculate_metrics(f"data/{file_name}", k=k_value, window_size=window_size, sampling_rate=sampling_rate)
                 elif k_value:
                     k_value = int(k_value)
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", k=k_value, sampling_rate=sampling_rate)
+                    accuracy, recall, precision, f1_score, correct_guesses, total_guesses = model_module.calculate_metrics(f"data/{file_name}", k=k_value, sampling_rate=sampling_rate)
                 elif window_size:
                     window_size = int(window_size)
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", k=5, window_size=window_size, sampling_rate=sampling_rate)
+                    accuracy, recall, precision, f1_score, correct_guesses, total_guesses = model_module.calculate_metrics(f"data/{file_name}", k=5, window_size=window_size, sampling_rate=sampling_rate)
                 else:
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", sampling_rate=sampling_rate)
+                    accuracy, recall, precision, f1_score, correct_guesses, total_guesses = model_module.calculate_metrics(f"data/{file_name}", sampling_rate=sampling_rate)
             else:
                 if window_size:
                     window_size = int(window_size)
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", window_size=window_size, sampling_rate=sampling_rate)
+                    accuracy, recall, precision, f1_score, correct_guesses, total_guesses = model_module.calculate_metrics(f"data/{file_name}", window_size=window_size, sampling_rate=sampling_rate)
                 else:
-                    accuracy, recall, precision, f1_score = model_module.calculate_metrics(f"data/{file_name}", sampling_rate=sampling_rate)
+                    accuracy, recall, precision, f1_score, correct_guesses, total_guesses = model_module.calculate_metrics(f"data/{file_name}", sampling_rate=sampling_rate)
 
             # Update the metric labels
             self.accuracy_label.config(text=f"Accuracy: {accuracy}")
             self.recall_label.config(text=f"Recall: {recall}")
             self.precision_label.config(text=f"Precision: {precision}")
             self.f1_score_label.config(text=f"F1-Score: {f1_score}")
+
+            # Plot correct guesses and total guesses
+            self.plot_correct_total_guesses(correct_guesses, total_guesses)
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
+
+    def plot_correct_total_guesses(self, correct_guesses, total_guesses):
+        """
+        Plot correct guesses and total guesses for each class.
+
+        Parameters:
+        - correct_guesses (dict): Dictionary containing the number of correct guesses for each class.
+        - total_guesses (dict): Dictionary containing the total number of guesses for each class.
+        """
+        # Clear previous plot
+        for widget in self.plot_frame.winfo_children():
+            widget.destroy()
+
+        fig, ax = plt.subplots(figsize=(6, 4))  # Adjust the figure size here
+        classes = list(correct_guesses.keys())
+        correct_counts = [correct_guesses[label] for label in classes]
+        total_counts = [total_guesses[label] for label in classes]
+
+        ax.bar(classes, total_counts, color='blue', label='Total Guesses')
+        ax.bar(classes, correct_counts, color='green', label='Correct Guesses')
+
+        ax.set_xlabel('Classes')
+        ax.set_ylabel('Count')
+        ax.set_title('Correct vs Total Guesses for Each Class')
+        ax.legend()
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+
+        # Display the plot in the interface
+        canvas = FigureCanvasTkAgg(fig, master=self.plot_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
 
 def main():
@@ -233,6 +269,10 @@ def main():
     root = tk.Tk()
     root.geometry("1000x800")  # Width x Height
     app = TennisClassifierGUI(root, csv_files, models)
+
+    # Bind the exit_application function to the window manager's close button
+    root.protocol("WM_DELETE_WINDOW", app.exit_application)
+
     root.mainloop()
 
 if __name__ == "__main__":

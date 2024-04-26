@@ -31,6 +31,8 @@ def calculate_metrics(csv_file_path, k=5, window_size=None, sampling_rate="100Hz
     - recall (float): Weighted average recall.
     - precision (float): Weighted average precision.
     - f1_score (float): Weighted average F1-score.
+    - correct_guesses (dict): Dictionary containing the number of correct guesses for each class.
+    - total_guesses (dict): Dictionary containing the total number of guesses for each class.
     """
     # Check if model with the same parameters is already trained
     model_key = f"k={k}_window={window_size}_sampling_rate={sampling_rate}"
@@ -75,7 +77,14 @@ def calculate_metrics(csv_file_path, k=5, window_size=None, sampling_rate="100Hz
     precision = metrics_report['weighted avg']['precision']
     f1_score = metrics_report['weighted avg']['f1-score']
 
-    # Store the trained model in the dictionary
-    trained_models[model_key] = (accuracy, recall, precision, f1_score)
+    # Calculate correct guesses and total guesses for each class
+    correct_guesses = {}
+    total_guesses = {}
+    for label in set(y):
+        correct_guesses[label] = np.sum((y == label) & (y_pred == label))
+        total_guesses[label] = np.sum(y_pred == label)
 
-    return accuracy, recall, precision, f1_score
+    # Store the trained model and metrics in the dictionary
+    trained_models[model_key] = (accuracy, recall, precision, f1_score, correct_guesses, total_guesses)
+
+    return accuracy, recall, precision, f1_score, correct_guesses, total_guesses

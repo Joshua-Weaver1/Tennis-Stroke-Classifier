@@ -30,6 +30,8 @@ def calculate_metrics(csv_file_path, window_size=None, sampling_rate="100Hz"):
     - recall (float): Weighted average recall.
     - precision (float): Weighted average precision.
     - f1_score (float): Weighted average F1-score.
+    - correct_guesses (dict): Dictionary containing the number of correct guesses for each class.
+    - total_guesses (dict): Dictionary containing the total number of guesses for each class.
     """
     # Check if model with the same parameters is already trained
     model_key = f"window={window_size}_sampling_rate={sampling_rate}"
@@ -62,19 +64,27 @@ def calculate_metrics(csv_file_path, window_size=None, sampling_rate="100Hz"):
     svm_classifier = SVC(kernel='rbf', random_state=42)
 
     # Perform cross-validation
-    scores = cross_val_score(svm_classifier, X, y, cv=5)
+    y_pred = cross_val_predict(svm_classifier, X, y, cv=5)
+
+    # Calculate correct and total guesses for each class
+    unique_classes = np.unique(y)
+    correct_guesses = {label: 0 for label in unique_classes}
+    total_guesses = {label: 0 for label in unique_classes}
+    for true_label, pred_label in zip(y, y_pred):
+        total_guesses[true_label] += 1
+        if true_label == pred_label:
+            correct_guesses[true_label] += 1
 
     # Calculate metrics using classification report
-    y_pred = cross_val_predict(svm_classifier, X, y, cv=5)
     metrics_report = classification_report(y, y_pred, output_dict=True)
 
     # Extract accuracy, recall, precision, and F1-score from the classification report
-    accuracy = np.mean(scores)
+    accuracy = metrics_report['accuracy']
     recall = metrics_report['weighted avg']['recall']
     precision = metrics_report['weighted avg']['precision']
     f1_score = metrics_report['weighted avg']['f1-score']
 
     # Store the trained model in the dictionary
-    trained_models[model_key] = (accuracy, recall, precision, f1_score)
+    trained_models[model_key] = (accuracy, recall, precision, f1_score, correct_guesses, total_guesses)
 
-    return accuracy, recall, precision, f1_score
+    return accuracy, recall, precision, f1_score, correct_guesses, total_guesses
