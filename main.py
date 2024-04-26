@@ -231,7 +231,7 @@ def main():
     models = [f.split(".")[0] for f in os.listdir("models") if f.endswith('.py')]
 
     root = tk.Tk()
-    root.geometry("800x600")  # Width x Height
+    root.geometry("1000x800")  # Width x Height
     app = TennisClassifierGUI(root, csv_files, models)
     root.mainloop()
 
