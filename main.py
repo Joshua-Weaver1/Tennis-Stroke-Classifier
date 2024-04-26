@@ -242,14 +242,18 @@ class TennisClassifierGUI:
         correct_counts = [correct_guesses[label] for label in classes]
         total_counts = [total_guesses[label] for label in classes]
 
-        ax.bar(classes, total_counts, color='blue', label='Total Guesses')
-        ax.bar(classes, correct_counts, color='green', label='Correct Guesses')
+        class_labels = ["No Shot", "Forehand", "Backhand", "Overhead"]
+        class_values = [0, 1, 2, 3]
+
+        ax.bar(class_values, total_counts, color='blue', label='Total Guesses')
+        ax.bar(class_values, correct_counts, color='green', label='Correct Guesses')
 
         ax.set_xlabel('Classes')
         ax.set_ylabel('Count')
         ax.set_title('Correct vs Total Guesses for Each Class')
         ax.legend()
-        plt.xticks(rotation=45)
+        ax.set_xticks(class_values)
+        ax.set_xticklabels(class_labels, rotation=45)
         plt.tight_layout()
 
         # Display the plot in the interface
