@@ -186,7 +186,6 @@ class TennisClassifierGUI:
         file_name = self.selected_file.get()
         model_name = self.selected_model.get()
         k_value = self.k_entry.get()
-        print("Value of k retrieved from GUI:", k_value)  # Debug print statement
         window_size = self.window_size_entry.get()
         sampling_rate = self.selected_sampling_rate.get()  # Get selected sampling rate
 
