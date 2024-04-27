@@ -237,7 +237,7 @@ class TennisClassifierGUI:
         for widget in self.plot_frame.winfo_children():
             widget.destroy()
 
-        fig, ax = plt.subplots(figsize=(6, 4))  # Adjust the figure size here
+        fig, ax = plt.subplots(figsize=(6, 4))
         classes = list(correct_guesses.keys())
         correct_counts = [correct_guesses[label] for label in classes]
         total_counts = [total_guesses[label] for label in classes]

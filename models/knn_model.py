@@ -65,10 +65,10 @@ def calculate_metrics(csv_file_path, k=5, window_size=None, sampling_rate="100Hz
     knn_classifier = KNeighborsClassifier(n_neighbors=k)
 
     # Perform cross-validation
-    scores = cross_val_score(knn_classifier, X, y, cv=5)
+    scores = cross_val_score(knn_classifier, X, y, cv=100)
 
     # Calculate metrics using classification report
-    y_pred = cross_val_predict(knn_classifier, X, y, cv=5)
+    y_pred = cross_val_predict(knn_classifier, X, y, cv=100)
     metrics_report = classification_report(y, y_pred, output_dict=True)
 
     # Extract accuracy, recall, precision, and F1-score from the classification report

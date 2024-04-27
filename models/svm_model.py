@@ -64,7 +64,7 @@ def calculate_metrics(csv_file_path, window_size=None, sampling_rate="100Hz"):
     svm_classifier = SVC(kernel='rbf', random_state=42)
 
     # Perform cross-validation
-    y_pred = cross_val_predict(svm_classifier, X, y, cv=5)
+    y_pred = cross_val_predict(svm_classifier, X, y, cv=10)
 
     # Calculate correct and total guesses for each class
     unique_classes = np.unique(y)
