@@ -263,11 +263,17 @@ class TennisClassifierGUI:
 
 
 def main():
-    # Get list of CSV files in the "data" directory
-    csv_files = [f for f in os.listdir("data") if f.endswith('.csv')]
+    # Directory path
+    directory_path = "data"
 
-    # Get list of model files in the "models" directory
-    models = [f.split(".")[0] for f in os.listdir("models") if f.endswith('.py')]
+    # Exclude files
+    exclude_files = ["alex_shot_data.csv", "kevin_shot_data.csv", "josh_shot_data.csv"]
+
+    # List CSV files in the directory excluding individual files
+    csv_files = [f for f in os.listdir(directory_path) if f.endswith('.csv') and f not in exclude_files]
+
+    # Get list of model files in the "models" directory excluding those starting with "test"
+    models = [f.split(".")[0] for f in os.listdir("models") if f.endswith('.py') and not f.startswith('test')]
 
     root = tk.Tk()
     root.geometry("1000x800")  # Width x Height
