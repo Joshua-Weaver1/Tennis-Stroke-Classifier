@@ -58,7 +58,7 @@ def create_cnn_model(input_shape, num_classes):
     model.add(Dense(num_classes, activation='softmax'))
     return model
 
-def calculate_metrics(csv_file_path, window_size=100, sampling_rate="100Hz"):
+def calculate_metrics(csv_file_path, window_size=10, sampling_rate="100Hz"):
     """
     Calculates classification metrics for a CNN model using preprocessed data.
 

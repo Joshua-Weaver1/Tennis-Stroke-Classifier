@@ -5,6 +5,8 @@ import cnn_1d_model
 class TestRandomForestModel(unittest.TestCase):
     
     def test_create_cnn_model(self):
+        # Test Model Creation
+
         # Define input shape
         input_shape = (100, 13)  # Example input shape
         
@@ -21,8 +23,20 @@ class TestRandomForestModel(unittest.TestCase):
         self.assertEqual(output_shape, num_classes)
 
     def test_calculate_metrics(self):
-        # Test the calculate_metrics function
+        # Test calculate_metrics returns all values
         print("Testing Results For 1D CNN")
+        accuracy, recall, precision, f1_score, correct_guesses, total_guesses = cnn_1d_model.calculate_metrics("data/all_shot_data.csv")
+        
+        self.assertIsNotNone(accuracy, "Accuracy should not be None")
+        self.assertIsNotNone(recall, "Recall should not be None")
+        self.assertIsNotNone(precision, "Precision should not be None")
+        self.assertIsNotNone(f1_score, "F1 Score should not be None")
+        self.assertIsNotNone(correct_guesses, "Correct guesses should not be None")
+        self.assertIsNotNone(total_guesses, "Total guesses should not be None")
+
+    def test_calculate_metrics_score(self):
+        # Evaluate the calculate_metrics function for performance
+        print("Evaluating Results For 1D CNN")
         accuracy, recall, precision, f1_score, correct_guesses, total_guesses = cnn_1d_model.calculate_metrics("data/all_shot_data.csv")
         
         self.assertTrue(accuracy > 0.69, f"Accuracy is too low: {accuracy}")

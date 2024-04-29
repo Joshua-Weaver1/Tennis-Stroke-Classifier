@@ -16,8 +16,20 @@ class TestRandomForestModel(unittest.TestCase):
         self.assertEqual(X_windows[0].tolist(), [1, 2, 3])
 
     def test_calculate_metrics(self):
-        # Test the calculate_metrics function
+        # Test calculate_metrics returns all values
         print("Testing Results For SVM")
+        accuracy, recall, precision, f1_score, correct_guesses, total_guesses = svm_model.calculate_metrics("data/all_shot_data.csv")
+        
+        self.assertIsNotNone(accuracy, "Accuracy should not be None")
+        self.assertIsNotNone(recall, "Recall should not be None")
+        self.assertIsNotNone(precision, "Precision should not be None")
+        self.assertIsNotNone(f1_score, "F1 Score should not be None")
+        self.assertIsNotNone(correct_guesses, "Correct guesses should not be None")
+        self.assertIsNotNone(total_guesses, "Total guesses should not be None")
+
+    def test_calculate_metrics_score(self):
+        # Evaluate the calculate_metrics function for performance
+        print("Evaluating Results For SVM")
         accuracy, recall, precision, f1_score, correct_guesses, total_guesses = svm_model.calculate_metrics("data/all_shot_data.csv")
         
         self.assertTrue(accuracy > 0.69, f"Accuracy is too low: {accuracy}")
