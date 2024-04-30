@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 import knn_model
 
-class TestRandomForestModel(unittest.TestCase):
+class TestKNNModel(unittest.TestCase):
 
     def test_create_windows(self):
         # Test the create_windows function
