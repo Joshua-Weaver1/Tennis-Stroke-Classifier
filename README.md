@@ -21,6 +21,7 @@ To run the project, you need to install the following libraries:
 - scikit-learn: `pip install scikit-learn`
 - Keras: `pip install keras`
 - TensorFlow: `pip install tensorflow`
+- matplotlib: `pip install matplotlib`
 
 ## Running the Program
 To run the program, first navigate to the Program directory.
