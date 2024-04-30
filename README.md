@@ -22,6 +22,18 @@ To run the project, you need to install the following libraries:
 - Keras: `pip install keras`
 - TensorFlow: `pip install tensorflow`
 
+## Running the Program
+To run the program, first navigate to the Program directory.
+From the command line:
+- For Windows: `python main.py`
+- For Mac: `python3 -m main.py`
+
+## Testing the Program
+To test the program, first navigate to the Program directory.
+From the command line:
+- For Windows: `python -m unittest discover models`
+- For Mac: `python3 -m unittest discover models`
+
 ## License
 This project is licensed under the [MIT License](LICENSE).
 
