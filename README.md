@@ -9,6 +9,19 @@ This repository contains the code and documentation for my ECM3401 Individual Pr
 - **main.py**: The entry point for the program responsible for the interface.
 - **README.md**: You are here! The main documentation for the project.
 
+## Installation
+### Python 3.12.2
+This project was developed with Python 3.12.2.
+To install Python 3.12.2, you can download the installer from the [official Python website](https://www.python.org/downloads/).
+
+## Required Libraries
+To run the project, you need to install the following libraries:
+- NumPy: `pip install numpy`
+- pandas: `pip install pandas`
+- scikit-learn: `pip install scikit-learn`
+- Keras: `pip install keras`
+- TensorFlow: `pip install tensorflow`
+
 ## License
 This project is licensed under the [MIT License](LICENSE).
 

@@ -3,7 +3,6 @@ import pandas as pd
 from sklearn.model_selection import cross_val_score, cross_val_predict
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
-import joblib
 
 # Dictionary to store trained models
 trained_models = {}

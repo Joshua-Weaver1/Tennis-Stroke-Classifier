@@ -5,7 +5,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
 from keras.models import Sequential
 from keras.layers import Conv1D, MaxPooling1D, Flatten, Dense
-import joblib
 
 # Dictionary to store trained models
 trained_models = {}
