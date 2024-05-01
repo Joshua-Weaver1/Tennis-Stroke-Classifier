@@ -267,11 +267,8 @@ def main():
     # Directory path
     directory_path = "data"
 
-    # Exclude files
-    exclude_files = ["alex_shot_data.csv", "kevin_shot_data.csv", "josh_shot_data.csv"]
-
     # List CSV files in the directory excluding individual files
-    csv_files = [f for f in os.listdir(directory_path) if f.endswith('.csv') and f not in exclude_files]
+    csv_files = [f for f in os.listdir(directory_path) if f.endswith('.csv')]
 
     # Get list of model files in the "models" directory excluding those starting with "test"
     models = [f.split(".")[0] for f in os.listdir("models") if f.endswith('.py') and not f.startswith('test')]
