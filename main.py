@@ -20,6 +20,7 @@ class TennisClassifierGUI:
         - models (list): List of available model names.
         """
         self.master = master
+        # Set Title
         self.master.title("Tennis Shot Classifier")
 
         # Create main frame to hold subframes

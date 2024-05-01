@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import patch
 import cnn_1d_model
 
 class TestRandomForestModel(unittest.TestCase):

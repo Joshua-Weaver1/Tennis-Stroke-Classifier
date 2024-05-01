@@ -5,7 +5,7 @@ This repository contains the code and documentation for my ECM3401 Individual Pr
 
 ## Project Structure
 - **data/**: Contains the CSV files containing inertial sensor data for different tennis shots.
-- **models/**: Includes trained machine learning models and scripts for model evaluation.
+- **models/**: Includes machine learning models and scripts for model evaluation.
 - **main.py**: The entry point for the program responsible for the interface.
 - **README.md**: You are here! The main documentation for the project.
 
@@ -27,7 +27,7 @@ To run the project, you need to install the following libraries:
 To run the program, first navigate to the Program directory.
 From the command line:
 - For Windows: `python main.py`
-- For Mac: `python3 -m main.py`
+- For Mac: `python3 main.py`
 
 ## Testing the Program
 To test the program, first navigate to the Program directory.
