@@ -1,7 +1,7 @@
 import unittest
 import svm_model
 
-class TestRandomForestModel(unittest.TestCase):
+class TestSVMModel(unittest.TestCase):
 
     def test_create_windows(self):
         # Test the create_windows function

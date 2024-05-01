@@ -1,7 +1,7 @@
 import unittest
 import cnn_1d_model
 
-class TestRandomForestModel(unittest.TestCase):
+class Test1DCNNModel(unittest.TestCase):
     
     def test_create_cnn_model(self):
         # Test Model Creation

@@ -1,7 +1,7 @@
 import unittest
 import knn_model
 
-class TestRandomForestModel(unittest.TestCase):
+class TestKNNModel(unittest.TestCase):
 
     def test_create_windows(self):
         # Test the create_windows function
